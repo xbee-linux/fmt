@@ -8,11 +8,24 @@ var:
 dependencies:
   - cmake
 
+builders:
+  - ninja
+
 
 provision:
   - url:
       from: https://github.com/fmtlib/fmt/archive/refs/tags/{{ .version }}/fmt-{{ .version }}.tar.gz
       todir: "{{ .xbee.src }}"
-
+  - folder: "{{ .xbee.src }}/fmt-{{ .version }}/build"
 
 build:
+  shell:
+    cmds:
+      - "cmake -DCMAKE_INSTALL_PREFIX={{ .xbee.out }}/usr     \
+      -DCMAKE_INSTALL_LIBDIR={{ .xbee.out }}/usr/lib \
+      -DBUILD_SHARED_LIBS=ON          \
+      -DFMT_TEST=OFF                  \
+      -G Ninja .."
+      - ninja
+      - ninja install
+    directory: "{{ .xbee.src }}/fmt-{{ .version }}/build"
