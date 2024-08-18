@@ -1,1 +1,18 @@
 schema-version: 1.0
+type: builder
+
+
+var:
+  version: 10.2.1
+
+dependencies:
+  - cmake
+
+
+provision:
+  - url:
+      from: https://github.com/fmtlib/fmt/archive/refs/tags/{{ .version }}/fmt-{{ .version }}.tar.gz
+      todir: "{{ .xbee.src }}"
+
+
+build:
